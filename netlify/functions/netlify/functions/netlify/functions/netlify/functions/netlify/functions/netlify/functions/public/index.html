@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SamSam – Fast & Reliable Top-Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+  :root {
+    --blue:#1a6bff;--blue-dark:#0a4fd6;--orange:#ff6b1a;
+    --green:#00c97a;--green-dark:#009f5e;--bg:#f4f7ff;
+    --dark:#0b0f1a;--card:#fff;--text:#1a1f36;
+    --muted:#6b7a99;--border:#e2e8f8;--radius:16px;
+    --shadow:0 4px 24px rgba(26,107,255,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+  h1,h2,h3,h4{font-family:'Syne',sans-serif}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:'Syne',sans-serif}
+  .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 8px 24px rgba(26,107,255,.3)}
+  .btn-orange{background:var(--orange);color:#fff}.btn-orange:hover{opacity:.9;transform:translateY(-1px)}
+  .btn-ghost{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3)}.btn-ghost:hover{background:rgba(255,255,255,.25)}
+  .btn-outline{background:transparent;color:var(--blue);border:2px solid var(--blue)}.btn-outline:hover{background:var(--blue);color:#fff}
+  .badge{display:inline-block;padding:4px 14px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(26,107,255,.1);color:var(--blue)}
+  .page{display:none;animation:fadeIn .3s ease}.page.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5%;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(244,247,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+  .nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--blue);cursor:pointer}
+  .nav-logo span{color:var(--orange)}
+  .nav-links{display:flex;align-items:center;gap:12px}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;cursor:pointer;transition:color .2s}
+  .nav-links a:hover{color:var(--blue)}
+
+  .hero{padding:120px 5% 80px;background:linear-gradient(135deg,#0b0f1a 0%,#1a2540 50%,#0b1a3a 100%);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(26,107,255,.25) 0%,transparent 70%);pointer-events:none}
+  .hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,26,.15) 0%,transparent 70%);pointer-events:none}
+  .hero-inner{max-width:640px;position:relative;z-index:2}
+  .hero-badge{margin-bottom:20px;background:rgba(255,107,26,.15);color:var(--orange)}
+  .hero h1{font-size:clamp(36px,5vw,58px);font-weight:800;color:#fff;line-height:1.12;margin-bottom:20px}
+  .hero h1 span{color:var(--orange)}
+  .hero p{font-size:17px;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:36px;max-width:480px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-stats{display:flex;gap:40px;margin-top:56px;padding-top:36px;border-top:1px solid rgba(255,255,255,.1)}
+  .hero-stat-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff}
+  .hero-stat-label{font-size:13px;color:rgba(255,255,255,.5);margin-top:4px}
+
+  .networks-strip{background:#fff;padding:18px 5%;display:flex;align-items:center;justify-content:center;gap:32px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .networks-strip span{font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:1px}
+  .net-chip{display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:50px;font-size:13px;font-weight:600;border:1.5px solid var(--border)}
+  .net-chip .dot{width:10px;height:10px;border-radius:50%}
+  .mtn .dot{background:#ffcc00}.airtel .dot{background:#e40000}.glo .dot{background:#008000}.nmobile .dot{background:#6600cc}
+
+  .section{padding:80px 5%}
+  .section-header{text-align:center;margin-bottom:48px}
+  .section-header h2{font-size:clamp(26px,3vw,38px);font-weight:800;margin-bottom:10px}
+  .section-header p{color:var(--muted);font-size:16px}
+  .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:1000px;margin:0 auto}
+  .service-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:30px 24px;cursor:pointer;transition:all .25s;text-align:center;position:relative;overflow:hidden}
+  .service-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--blue)}
+  .service-icon{width:56px;height:56px;border-radius:16px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:26px}
+  .service-card h3{font-size:16px;font-weight:700;margin-bottom:6px}
+  .service-card p{font-size:13px;color:var(--muted)}
+  .s-blue .service-icon{background:rgba(26,107,255,.1)}.s-orange .service-icon{background:rgba(255,107,26,.1)}
+  .s-green .service-icon{background:rgba(0,201,122,.1)}.s-purple .service-icon{background:rgba(128,0,200,.1)}.s-teal .service-icon{background:rgba(0,180,180,.1)}
+
+  .how-bg{background:linear-gradient(135deg,#0b0f1a 0%,#1a2540 100%);color:#fff}
+  .how-bg .section-header h2{color:#fff}.how-bg .section-header p{color:rgba(255,255,255,.5)}
+  .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;max-width:960px;margin:0 auto}
+  .step-card{text-align:center;padding:32px 20px}
+  .step-num{width:52px;height:52px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--orange));color:#fff}
+  .step-card h3{font-size:17px;font-weight:700;color:#fff;margin-bottom:8px}
+  .step-card p{font-size:14px;color:rgba(255,255,255,.5);line-height:1.7}
+
+  .plans-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:36px;flex-wrap:wrap}
+  .plan-tab{padding:10px 24px;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:#fff;transition:all .2s;font-family:'Syne',sans-serif}
+  .plan-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .plans-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;max-width:900px;margin:0 auto}
+  .plan-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 18px;transition:all .2s}
+  .plan-card:hover{border-color:var(--blue);box-shadow:var(--shadow)}
+  .plan-size{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--blue)}
+  .plan-validity{font-size:12px;color:var(--muted);margin:4px 0 10px}
+  .plan-price{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text)}
+  .plan-buy{margin-top:14px;width:100%;padding:10px;border-radius:10px;background:var(--blue);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'Syne',sans-serif}
+  .plan-buy:hover{background:var(--blue-dark)}
+
+  .testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;max-width:960px;margin:0 auto}
+  .testi-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px}
+  .testi-stars{color:#f5a623;font-size:14px;margin-bottom:12px}
+  .testi-text{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+  .testi-author{display:flex;align-items:center;gap:12px}
+  .testi-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
+  .testi-name{font-weight:600;font-size:14px}
+  .testi-loc{font-size:12px;color:var(--muted)}
+
+  .cta-banner{margin:0 5% 80px;border-radius:24px;padding:60px 40px;background:linear-gradient(135deg,var(--blue) 0%,#0a3ab5 60%,#0b0f1a 100%);text-align:center;position:relative;overflow:hidden}
+  .cta-banner::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,26,.2) 0%,transparent 70%)}
+  .cta-banner h2{font-size:clamp(24px,3vw,36px);color:#fff;font-weight:800;margin-bottom:12px;position:relative}
+  .cta-banner p{color:rgba(255,255,255,.65);margin-bottom:32px;font-size:16px;position:relative}
+
+  footer{background:var(--dark);color:rgba(255,255,255,.5);padding:48px 5% 28px;font-size:14px}
+  .footer-top{display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;margin-bottom:40px}
+  .footer-brand p{max-width:240px;line-height:1.7;color:rgba(255,255,255,.4);margin-top:8px}
+  .footer-col h4{font-family:'Syne',sans-serif;color:#fff;font-size:14px;margin-bottom:14px}
+  .footer-col a{display:block;color:rgba(255,255,255,.45);text-decoration:none;margin-bottom:10px;cursor:pointer}
+  .footer-col a:hover{color:var(--orange)}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+  .modal-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(11,15,26,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+  .modal-overlay.open{display:flex}
+  .modal{background:#fff;border-radius:24px;padding:40px;width:90%;max-width:420px;position:relative;animation:slideUp .3s ease}
+  @keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:none;background:var(--bg);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  .modal h2{font-size:24px;font-weight:800;margin-bottom:6px}
+  .modal p{color:var(--muted);font-size:14px;margin-bottom:28px}
+  .form-group{margin-bottom:18px}
+  .form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:var(--text)}
+  .form-group input,.form-group select{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;outline:none;transition:border-color .2s;background:var(--bg);font-family:'DM Sans',sans-serif}
+  .form-group input:focus,.form-group select:focus{border-color:var(--blue);background:#fff}
+  .form-submit{width:100%;padding:14px;border-radius:50px;background:var(--blue);color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:background .2s;margin-top:6px}
+  .form-submit:hover{background:var(--blue-dark)}
+  .auth-switch{text-align:center;margin-top:18px;font-size:14px;color:var(--muted)}
+  .auth-switch a{color:var(--blue);font-weight:600;cursor:pointer;text-decoration:none}
+
+  /* DASHBOARD */
+  .dash-layout{display:flex;min-height:100vh}
+  .sidebar{width:240px;background:var(--dark);padding:24px 0;position:fixed;top:0;left:0;bottom:0;z-index:50;display:flex;flex-direction:column}
+  .sidebar-logo{padding:0 24px 32px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff}
+  .sidebar-logo span{color:var(--orange)}
+  .sidebar-nav{flex:1}
+  .sidebar-item{display:flex;align-items:center;gap:12px;padding:13px 24px;color:rgba(255,255,255,.45);cursor:pointer;font-size:14px;font-weight:500;transition:all .2s;border-left:3px solid transparent}
+  .sidebar-item:hover{color:#fff;background:rgba(255,255,255,.05)}
+  .sidebar-item.active{color:#fff;background:rgba(26,107,255,.15);border-left-color:var(--blue)}
+  .sidebar-item .icon{font-size:18px;width:22px;text-align:center}
+  .sidebar-section{padding:12px 24px 8px;font-size:10px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-top:8px}
+  .sidebar-bottom{padding:16px 24px;border-top:1px solid rgba(255,255,255,.08)}
+  .sidebar-user{display:flex;align-items:center;gap:10px}
+  .sidebar-avatar{width:36px;height:36px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px}
+  .sidebar-username{font-size:13px;font-weight:600;color:#fff}
+  .sidebar-role{font-size:11px;color:rgba(255,255,255,.35)}
+
+  .dash-main{margin-left:240px;flex:1;background:var(--bg);padding:32px;min-height:100vh}
+  .dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+  .dash-header h2{font-size:22px;font-weight:800}
+  .dash-header-right{display:flex;align-items:center;gap:14px}
+  .notif-btn{width:40px;height:40px;border-radius:12px;background:#fff;border:1.5px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative}
+  .notif-dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:1.5px solid #fff}
+
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+  .stat-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 20px}
+  .stat-card.accent-blue{background:var(--blue);border-color:var(--blue)}
+  .stat-card.accent-blue .stat-label,.stat-card.accent-blue .stat-val{color:#fff}
+  .stat-card.accent-blue .stat-change{color:rgba(255,255,255,.7)}
+  .stat-label{font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+  .stat-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--text)}
+  .stat-change{font-size:12px;color:var(--green);margin-top:6px}
+
+  .dash-grid{display:grid;grid-template-columns:1fr 340px;gap:20px}
+  .dash-panel{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:24px}
+  .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .panel-header h3{font-size:15px;font-weight:700}
+  .panel-header a{font-size:13px;color:var(--blue);cursor:pointer;text-decoration:none}
+
+  .txn-list{display:flex;flex-direction:column;gap:1px}
+  .txn-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+  .txn-item:last-child{border-bottom:none}
+  .txn-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .txn-info{flex:1}
+  .txn-name{font-size:14px;font-weight:600}
+  .txn-time{font-size:12px;color:var(--muted);margin-top:2px}
+  .txn-amount{font-family:'Syne',sans-serif;font-weight:700;font-size:15px}
+  .txn-amount.credit{color:var(--green)}.txn-amount.debit{color:var(--orange)}
+
+  .service-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .s-tab{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);transition:all .2s;font-family:'Syne',sans-serif}
+  .s-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .quick-form .form-group{margin-bottom:14px}
+  .quick-form input,.quick-form select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;outline:none;background:var(--bg);transition:border-color .2s;font-family:'DM Sans',sans-serif}
+  .quick-form input:focus,.quick-form select:focus{border-color:var(--blue);background:#fff}
+  .quick-form label{font-size:12px;font-weight:600;margin-bottom:6px;display:block}
+  .proceed-btn{width:100%;padding:13px;border-radius:50px;background:linear-gradient(90deg,var(--blue),var(--orange));color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:opacity .2s}
+  .proceed-btn:hover{opacity:.9}
+  .proceed-btn:disabled{opacity:.5;cursor:not-allowed}
+
+  .wallet-card{border-radius:var(--radius);padding:24px;background:linear-gradient(135deg,var(--blue),#0a3ab5);color:#fff;margin-bottom:20px}
+  .wallet-label{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:8px}
+  .wallet-bal{font-family:'Syne',sans-serif;font-size:32px;font-weight:800}
+  .wallet-actions{display:flex;gap:10px;margin-top:20px}
+  .w-btn{flex:1;padding:10px;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2);font-size:13px;font-weight:600;cursor:pointer;font-family:'Syne',sans-serif}
+  .w-btn:hover{background:rgba(255,255,255,.25)}
+
+  /* Fund Modal */
+  .fund-amounts{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+  .fund-chip{padding:10px 18px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif}
+  .fund-chip:hover,.fund-chip.selected{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+  .toast{position:fixed;bottom:28px;right:28px;z-index:999;background:var(--dark);color:#fff;padding:14px 22px;border-radius:14px;font-size:14px;display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:all .3s}
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast.success{border-left:4px solid var(--green)}
+  .toast.error{border-left:4px solid var(--orange)}
+
+  .loader{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  @media(max-width:768px){
+    .sidebar{transform:translateX(-100%);transition:transform .3s}
+    .sidebar.open{transform:translateX(0)}
+    .dash-main{margin-left:0;padding:20px}
+    .dash-grid{grid-template-columns:1fr}
+    .hero{padding:100px 5% 60px}
+    .hero-stats{gap:24px}
+    .nav-links .btn-outline{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <div class="nav-logo" onclick="showPage('home')">Sam<span>Sam</span></div>
+  <div class="nav-links">
+    <a onclick="scrollToSection('services')">Services</a>
+    <a onclick="scrollToSection('plans')">Data Plans</a>
+    <a onclick="scrollToSection('how')">How it Works</a>
+    <button class="btn btn-outline" style="padding:9px 20px;font-size:13px;" onclick="openModal('login')">Log In</button>
+    <button class="btn btn-primary" style="padding:9px 20px;font-size:13px;" onclick="openModal('register')">Get Started</button>
+  </div>
+</nav>
+
+<!-- ══ HOME PAGE ══ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="badge hero-badge">⚡ Nigeria's Fastest VTU Platform</div>
+      <h1>Buy Data & Pay Bills in <span>Seconds</span></h1>
+      <p>Instant airtime, data bundles, cable TV, electricity — all networks, all plans, 24/7. No stress, no delays.</p>
+      <div class="hero-cta">
+        <button class="btn btn-orange" onclick="openModal('register')">🚀 Create Free Account</button>
+        <button class="btn btn-ghost" onclick="scrollToSection('plans')">View Data Plans</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hero-stat-val">120k+</div><div class="hero-stat-label">Happy Customers</div></div>
+        <div><div class="hero-stat-val">₦2.4B+</div><div class="hero-stat-label">Transactions Processed</div></div>
+        <div><div class="hero-stat-val">99.9%</div><div class="hero-stat-label">Uptime</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="networks-strip">
+    <span>Supported Networks</span>
+    <div class="net-chip mtn"><div class="dot"></div> MTN</div>
+    <div class="net-chip airtel"><div class="dot"></div> Airtel</div>
+    <div class="net-chip glo"><div class="dot"></div> Glo</div>
+    <div class="net-chip nmobile"><div class="dot"></div> 9mobile</div>
+  </div>
+
+  <section class="section" id="services">
+    <div class="section-header">
+      <div class="badge" style="margin-bottom:12px;">Our Services</div>
+      <h2>Everything You Need, One Platform</h2>
+      <p>Top up, pay bills, and stay connected — instantly.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card s-blue" onclick="openModal('register')"><div class="service-icon">📶</div><h3>Mobile Data</h3><p>MTN, Airtel, Glo & 9mobile data bundles at best prices</p></div>
+      <div class="service-card s-orange" onclick="openModal('register')"><div class="service-icon">📱</div><h3>Airtime Top-Up</h3><p>All networks, instant delivery, any amount from ₦50</p></div>
+      <div class="service-card s-green" onclick="openModal('register')"><div class="service-icon">📺</div><h3>Cable TV</h3><p>DSTV, GOtv & Startimes subscription renewals</p></div>
+      <div class="service-card s-purple" onclick="openModal('register')"><div class="service-icon">⚡</div><h3>Electricity Bills</h3><p>Buy prepaid & postpaid electricity units easily</p></div>
+      <div class="service-card s-teal" onclick="openModal('register')"><div class="service-icon">📋</div><h3>Exam Pins & More</h3><p>WAEC, NECO, JAMB result pins at your fingertips</p></div>
+    </div>
+  </section>
+
+  <section class="section how-bg" id="how">
+    <div class="section-header">
+      <div class="badge" style="background:rgba(255,107,26,.15);color:var(--orange);margin-bottom:12px;">Simple Process</div>
+      <h2>How It Works</h2><p>Get started in under 2 minutes.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-num">1</div><h3>Create Account</h3><p>Sign up for free in seconds with just your email and phone number.</p></div>
+      <div class="step-card"><div class="step-num">2</div><h3>Fund Wallet</h3><p>Add funds via bank transfer or card — your money, secured by Paystack.</p></div>
+      <div class="step-card"><div class="step-num">3</div><h3>Choose Service</h3><p>Pick data, airtime, cable, electricity or exam pins.</p></div>
+      <div class="step-card"><div class="step-num">4</div><h3>Done! ⚡</h3><p>Your purchase delivers instantly. Receipt goes straight to your email.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="plans">
+    <div class="section-header">
+      <div class="badge" style="margin-bottom:12px;">Data Plans</div>
+      <h2>Affordable Data Bundles</h2><p>SME data at prices that make sense. No hidden charges.</p>
+    </div>
+    <div class="plans-tabs">
+      <div class="plan-tab active" onclick="switchNetwork(this,'mtn')">MTN</div>
+      <div class="plan-tab" onclick="switchNetwork(this,'airtel')">Airtel</div>
+      <div class="plan-tab" onclick="switchNetwork(this,'glo')">Glo</div>
+      <div class="plan-tab" onclick="switchNetwork(this,'9mobile')">9mobile</div>
+    </div>
+    <div class="plans-grid" id="plansGrid"></div>
+  </section>
+
+  <section class="section" style="background:#fff;">
+    <div class="section-header"><div class="badge" style="margin-bottom:12px;">Testimonials</div><h2>Loved by Nigerians 🇳🇬</h2></div>
+    <div class="testi-grid">
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"SamSam is unreal! I bought 10GB for my MTN line and it delivered in literally 5 seconds. Will never use another platform again."</p><div class="testi-author"><div class="testi-avatar" style="background:var(--blue);">TJ</div><div><div class="testi-name">Taiwo Johnson</div><div class="testi-loc">Lagos, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"I sell data as a business and SamSam's prices are the best I've seen anywhere. My profits doubled after switching."</p><div class="testi-author"><div class="testi-avatar" style="background:var(--orange);">FA</div><div><div class="testi-name">Fatima Aliyu</div><div class="testi-loc">Abuja, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Paid my DSTV and electricity bill on the same day without leaving my house. The interface is clean and super easy to use!"</p><div class="testi-author"><div class="testi-avatar" style="background:var(--green);">CU</div><div><div class="testi-name">Chidi Uche</div><div class="testi-loc">Port Harcourt, Nigeria</div></div></div></div>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <h2>Ready to Get Started?</h2>
+    <p>Join 120,000+ Nigerians who trust SamSam for all their top-up needs.</p>
+    <button class="btn btn-orange" onclick="openModal('register')">🚀 Create Free Account — It's Fast</button>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo" style="color:#fff;">Sam<span>Sam</span></div>
+        <p>Nigeria's most reliable VTU platform. Fast, affordable, and always available.</p>
+      </div>
+      <div class="footer-col"><h4>Services</h4><a>Mobile Data</a><a>Airtime</a><a>Cable TV</a><a>Electricity</a><a>Exam Pins</a></div>
+      <div class="footer-col"><h4>Company</h4><a>About Us</a><a>Blog</a><a>Careers</a><a>Contact</a></div>
+      <div class="footer-col"><h4>Support</h4><a>FAQs</a><a>Help Center</a><a>Privacy Policy</a><a>Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 SamSam. All rights reserved.</span><span>Secured by Paystack 🔒</span></div>
+  </footer>
+</div>
+
+<!-- ══ DASHBOARD PAGE ══ -->
+<div id="page-dashboard" class="page">
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">Sam<span>Sam</span></div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-item active" onclick="switchDashTab(this,'overview')"><span class="icon">🏠</span> Dashboard</div>
+        <div class="sidebar-section">Services</div>
+        <div class="sidebar-item" onclick="switchDashTab(this,'data')"><span class="icon">📶</span> Buy Data</div>
+        <div class="sidebar-item" onclick="switchDashTab(this,'airtime')"><span class="icon">📱</span> Airtime</div>
+        <div class="sidebar-item" onclick="switchDashTab(this,'cable')"><span class="icon">📺</span> Cable TV</div>
+        <div class="sidebar-item" onclick="switchDashTab(this,'electricity')"><span class="icon">⚡</span> Electricity</div>
+        <div class="sidebar-item" onclick="switchDashTab(this,'exam')"><span class="icon">📋</span> Exam Pins</div>
+        <div class="sidebar-section">Account</div>
+        <div class="sidebar-item" onclick="switchDashTab(this,'wallet')"><span class="icon">💰</span> Wallet</div>
+        <div class="sidebar-item" onclick="switchDashTab(this,'history')"><span class="icon">📜</span> History</div>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="sidebarAvatar">JD</div>
+          <div><div class="sidebar-username" id="sidebarName">John Doe</div><div class="sidebar-role">Standard User</div></div>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;margin-top:14px;padding:10px;font-size:13px;" onclick="logout()">Logout</button>
+      </div>
+    </aside>
+
+    <main class="dash-main">
+      <div class="dash-header">
+        <div>
+          <h2 id="dashGreeting">Good morning 👋</h2>
+          <p style="color:var(--muted);font-size:13px;margin-top:4px;">Here's what's happening with your account today.</p>
+        </div>
+        <div class="dash-header-right">
+          <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+          <button class="btn btn-primary" style="padding:10px 20px;font-size:13px;" onclick="openFundModal()">+ Fund Wallet</button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card accent-blue">
+          <div class="stat-label">Wallet Balance</div>
+          <div class="stat-val" id="walletBalStat">₦0.00</div>
+          <div class="stat-change">Available to spend</div>
+        </div>
+        <div class="stat-card"><div class="stat-label">Total Spent</div><div class="stat-val" id="totalSpent">₦0</div><div class="stat-change" style="color:var(--orange);">This session</div></div>
+        <div class="stat-card"><div class="stat-label">Transactions</div><div class="stat-val" id="txnCount">0</div><div class="stat-change">This session</div></div>
+        <div class="stat-card"><div class="stat-label">Referral Bonus</div><div class="stat-val">₦0</div><div class="stat-change" style="color:var(--green);">Invite friends</div></div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-panel">
+          <div class="panel-header"><h3>Recent Transactions</h3><a>View all →</a></div>
+          <div class="txn-list" id="txnList">
+            <div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">No transactions yet.<br>Fund your wallet and make your first purchase!</div>
+          </div>
+        </div>
+        <div>
+          <div class="wallet-card">
+            <div class="wallet-label">Wallet Balance</div>
+            <div class="wallet-bal" id="walletBalCard">₦0.00</div>
+            <div class="wallet-actions">
+              <button class="w-btn" onclick="openFundModal()">+ Fund</button>
+              <button class="w-btn">↗ Transfer</button>
+            </div>
+          </div>
+          <div class="dash-panel">
+            <h3 style="margin-bottom:16px;font-size:15px;font-weight:700;">Quick Purchase</h3>
+            <div class="service-tabs">
+              <div class="s-tab active" onclick="switchServiceTab(this,'data')">Data</div>
+              <div class="s-tab" onclick="switchServiceTab(this,'airtime')">Airtime</div>
+              <div class="s-tab" onclick="switchServiceTab(this,'cable')">Cable</div>
+              <div class="s-tab" onclick="switchServiceTab(this,'elect')">Electricity</div>
+            </div>
+
+            <!-- DATA FORM -->
+            <div class="quick-form" id="qf-data">
+              <div class="form-group"><label>Network</label>
+                <select id="d-network"><option value="mtn">MTN</option><option value="airtel">Airtel</option><option value="glo">Glo</option><option value="9mobile">9mobile</option></select></div>
+              <div class="form-group"><label>Phone Number</label><input type="tel" id="d-phone" placeholder="0801 234 5678"/></div>
+              <div class="form-group"><label>Data Plan</label>
+                <select id="d-plan">
+                  <option value="300">1GB – 30 Days – ₦300</option>
+                  <option value="550">2GB – 30 Days – ₦550</option>
+                  <option value="1500">5GB – 30 Days – ₦1,500</option>
+                  <option value="2800">10GB – 30 Days – ₦2,800</option>
+                  <option value="5000">20GB – 30 Days – ₦5,000</option>
+                </select></div>
+              <button class="proceed-btn" onclick="processBuy('data')">Buy Data ⚡</button>
+            </div>
+
+            <!-- AIRTIME FORM -->
+            <div class="quick-form" id="qf-airtime" style="display:none;">
+              <div class="form-group"><label>Network</label>
+                <select id="a-network"><option>MTN</option><option>Airtel</option><option>Glo</option><option>9mobile</option></select></div>
+              <div class="form-group"><label>Phone Number</label><input type="tel" id="a-phone" placeholder="0801 234 5678"/></div>
+              <div class="form-group"><label>Amount (₦)</label><input type="number" id="a-amount" placeholder="e.g. 500" min="50"/></div>
+              <button class="proceed-btn" onclick="processBuy('airtime')">Buy Airtime ⚡</button>
+            </div>
+
+            <!-- CABLE FORM -->
+            <div class="quick-form" id="qf-cable" style="display:none;">
+              <div class="form-group"><label>Provider</label>
+                <select id="c-provider"><option>DSTV</option><option>GOtv</option><option>Startimes</option></select></div>
+              <div class="form-group"><label>SmartCard / IUC Number</label><input type="text" id="c-card" placeholder="1234567890"/></div>
+              <div class="form-group"><label>Package</label>
+                <select id="c-plan"><option value="9000">DSTV Compact – ₦9,000</option><option value="5000">DSTV Access – ₦5,000</option><option value="4150">GOtv Jolli – ₦4,150</option><option value="2950">GOtv Jinja – ₦2,950</option><option value="1900">Startimes Nova – ₦1,900</option></select></div>
+              <button class="proceed-btn" onclick="processBuy('cable')">Pay Subscription ⚡</button>
+            </div>
+
+            <!-- ELECTRICITY FORM -->
+            <div class="quick-form" id="qf-elect" style="display:none;">
+              <div class="form-group"><label>Disco</label>
+                <select id="e-disco"><option>EKEDC (Eko)</option><option>IKEDC (Ikeja)</option><option>AEDC (Abuja)</option><option>PHED (Port Harcourt)</option><option>EEDC (Enugu)</option></select></div>
+              <div class="form-group"><label>Meter Number</label><input type="text" id="e-meter" placeholder="12345678901"/></div>
+              <div class="form-group"><label>Amount (₦)</label><input type="number" id="e-amount" placeholder="e.g. 5000" min="500"/></div>
+              <button class="proceed-btn" onclick="processBuy('electricity')">Buy Units ⚡</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ══ AUTH MODAL ══ -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+    <div id="loginForm">
+      <h2>Welcome back 👋</h2><p>Log in to your SamSam account</p>
+      <div class="form-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"/></div>
+      <button class="form-submit" onclick="handleLogin()">Log In</button>
+      <div class="auth-switch">Don't have an account? <a onclick="openModal('register')">Sign up free</a></div>
+    </div>
+    <div id="registerForm" style="display:none;">
+      <h2>Create Account 🚀</h2><p>Join 120,000+ users on SamSam</p>
+      <div class="form-group"><label>Full Name</label><input type="text" id="regName" placeholder="John Doe"/></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="regEmail" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>Phone Number</label><input type="tel" id="regPhone" placeholder="0801 234 5678"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="regPass" placeholder="Min. 8 characters"/></div>
+      <button class="form-submit" onclick="handleRegister()">Create Account — Free</button>
+      <div class="auth-switch">Already have an account? <a onclick="openModal('login')">Log in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FUND MODAL ══ -->
+<div class="modal-overlay" id="fundModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('fundModal')">✕</button>
+    <h2>Fund Wallet 💰</h2><p>Add money to your SamSam wallet securely via Paystack</p>
+    <div class="fund-amounts">
+      <div class="fund-chip" onclick="selectFundAmount(this,500)">₦500</div>
+      <div class="fund-chip" onclick="selectFundAmount(this,1000)">₦1,000</div>
+      <div class="fund-chip" onclick="selectFundAmount(this,2000)">₦2,000</div>
+      <div class="fund-chip" onclick="selectFundAmount(this,5000)">₦5,000</div>
+      <div class="fund-chip" onclick="selectFundAmount(this,10000)">₦10,000</div>
+    </div>
+    <div class="form-group"><label>Or enter custom amount (₦)</label><input type="number" id="fundAmount" placeholder="e.g. 3000" min="100"/></div>
+    <button class="form-submit" onclick="initPaystack()">Pay with Paystack 🔒</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ <span id="toastMsg">Success!</span></div>
+
+<script>
+// ══ CONFIG — Replace with your real keys before launch ══
+const CONFIG = {
+  PAYSTACK_PUBLIC_KEY: 'pk_test_5722e3ed7d7381213f633c6fba24b484ff7df6d0',
+  VTPASS_API_KEY:      'your_vtpass_api_key',                 // Replace: https://vtpass.com/documentation
+  VTPASS_SECRET_KEY:   'your_vtpass_secret_key',
+  VTPASS_BASE_URL:     'https://sandbox.vtpass.com/api',       // Change to https://vtpass.com/api for live
+};
+
+// ══ APP STATE ══
+let state = {
+  user: null,
+  walletBalance: 0,
+  transactions: [],
+  totalSpent: 0,
+};
+
+// ══ DATA PLANS ══
+const plans = {
+  mtn:[{size:'500MB',validity:'30 Days',price:'₦150',amount:150},{size:'1GB',validity:'30 Days',price:'₦300',amount:300},{size:'2GB',validity:'30 Days',price:'₦550',amount:550},{size:'5GB',validity:'30 Days',price:'₦1,500',amount:1500},{size:'10GB',validity:'30 Days',price:'₦2,800',amount:2800},{size:'20GB',validity:'30 Days',price:'₦5,000',amount:5000}],
+  airtel:[{size:'500MB',validity:'30 Days',price:'₦200',amount:200},{size:'1.5GB',validity:'30 Days',price:'₦400',amount:400},{size:'3GB',validity:'30 Days',price:'₦700',amount:700},{size:'6GB',validity:'30 Days',price:'₦1,500',amount:1500},{size:'12GB',validity:'30 Days',price:'₦2,900',amount:2900},{size:'25GB',validity:'30 Days',price:'₦5,500',amount:5500}],
+  glo:[{size:'1GB',validity:'30 Days',price:'₦250',amount:250},{size:'2.5GB',validity:'30 Days',price:'₦500',amount:500},{size:'5GB',validity:'30 Days',price:'₦1,000',amount:1000},{size:'10GB',validity:'30 Days',price:'₦2,000',amount:2000},{size:'18GB',validity:'30 Days',price:'₦3,500',amount:3500},{size:'30GB',validity:'30 Days',price:'₦5,500',amount:5500}],
+  '9mobile':[{size:'500MB',validity:'30 Days',price:'₦200',amount:200},{size:'1GB',validity:'30 Days',price:'₦350',amount:350},{size:'2GB',validity:'30 Days',price:'₦700',amount:700},{size:'5GB',validity:'30 Days',price:'₦1,600',amount:1600},{size:'10GB',validity:'30 Days',price:'₦3,000',amount:3000},{size:'15GB',validity:'30 Days',price:'₦4,500',amount:4500}]
+};
+
+function renderPlans(network){
+  document.getElementById('plansGrid').innerHTML = plans[network].map(p=>`
+    <div class="plan-card">
+      <div class="plan-size">${p.size}</div>
+      <div class="plan-validity">${p.validity}</div>
+      <div class="plan-price">${p.price}</div>
+      <button class="plan-buy" onclick="openModal('register')">Buy Now</button>
+    </div>`).join('');
+}
+renderPlans('mtn');
+
+function switchNetwork(el,network){
+  document.querySelectorAll('.plan-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); renderPlans(network);
+}
+
+// ══ PAGES ══
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('mainNav').style.display = name==='home'?'flex':'none';
+  window.scrollTo(0,0);
+}
+function scrollToSection(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ══ AUTH MODAL ══
+function openModal(type){
+  document.getElementById('authModal').classList.add('open');
+  document.getElementById('loginForm').style.display=type==='login'?'block':'none';
+  document.getElementById('registerForm').style.display=type==='register'?'block':'none';
+}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.getElementById('authModal').addEventListener('click',function(e){if(e.target===this)closeModal('authModal')});
+document.getElementById('fundModal').addEventListener('click',function(e){if(e.target===this)closeModal('fundModal')});
+
+function handleLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  if(!email||!pass){showToast('Please fill in all fields','error');return}
+  closeModal('authModal');
+  loadDashboard({name:email.split('@')[0],email});
+}
+function handleRegister(){
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const phone=document.getElementById('regPhone').value.trim();
+  const pass=document.getElementById('regPass').value;
+  if(!name||!email||!phone||!pass){showToast('Please fill in all fields','error');return}
+  if(pass.length<8){showToast('Password must be at least 8 characters','error');return}
+  closeModal('authModal');
+  loadDashboard({name,email,phone});
+}
+function loadDashboard(user){
+  state.user=user;
+  const initials=user.name.slice(0,2).toUpperCase();
+  const displayName=user.name.charAt(0).toUpperCase()+user.name.slice(1);
+  document.getElementById('sidebarAvatar').textContent=initials;
+  document.getElementById('sidebarName').textContent=displayName;
+  const hour=new Date().getHours();
+  const greeting=hour<12?'Good morning':hour<17?'Good afternoon':'Good evening';
+  document.getElementById('dashGreeting').textContent=greeting+', '+displayName+' 👋';
+  updateWalletUI();
+  showPage('dashboard');
+  showToast('Welcome to SamSam! 🎉','success');
+}
+function logout(){showPage('home');state={user:null,walletBalance:0,transactions:[],totalSpent:0};showToast('You have been logged out.','success')}
+
+// ══ WALLET UI ══
+function updateWalletUI(){
+  const fmt='₦'+state.walletBalance.toLocaleString('en-NG',{minimumFractionDigits:2});
+  document.getElementById('walletBalStat').textContent=fmt;
+  document.getElementById('walletBalCard').textContent=fmt;
+  document.getElementById('totalSpent').textContent='₦'+state.totalSpent.toLocaleString();
+  document.getElementById('txnCount').textContent=state.transactions.length;
+}
+
+// ══ FUND MODAL ══
+let selectedFundAmount=0;
+function openFundModal(){document.getElementById('fundModal').classList.add('open')}
+function selectFundAmount(el,amt){
+  document.querySelectorAll('.fund-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedFundAmount=amt;
+  document.getElementById('fundAmount').value=amt;
+}
+
+// ══ PAYSTACK INTEGRATION ══
+function initPaystack(){
+  if(!state.user){showToast('Please log in first','error');return}
+  const input=document.getElementById('fundAmount').value;
+  const amount=parseInt(input)||selectedFundAmount;
+  if(!amount||amount<100){showToast('Minimum funding amount is ₦100','error');return}
+
+  // NOTE: Replace pk_test_xxx with your real Paystack public key
+  const handler=PaystackPop.setup({
+    key: CONFIG.PAYSTACK_PUBLIC_KEY,
+    email: state.user.email||'user@samsam.com',
+    amount: amount*100, // Paystack uses kobo
+    currency:'NGN',
+    ref:'SSM-'+Date.now(),
+    callback:function(response){
+      // Payment successful — credit wallet
+      closeModal('fundModal');
+      state.walletBalance+=amount;
+      addTransaction({icon:'💰',name:'Wallet Funding',detail:'Via Paystack · Ref: '+response.reference,amount:'+₦'+amount.toLocaleString(),type:'credit'});
+      updateWalletUI();
+      showToast('₦'+amount.toLocaleString()+' added to your wallet! 🎉','success');
+    },
+    onClose:function(){showToast('Payment cancelled','error')}
+  });
+  handler.openIframe();
+}
+
+// ══ DASHBOARD TABS ══
+function switchDashTab(el,tab){
+  if(el){document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));el.classList.add('active')}
+}
+function switchServiceTab(el,tab){
+  document.querySelectorAll('.s-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  ['data','airtime','cable','elect'].forEach(t=>{
+    document.getElementById('qf-'+t).style.display=t===tab?'block':'none';
+  });
+}
+
+// ══ BUY SERVICE (VTpass Integration) ══
+async function processBuy(service){
+  // Gather form data
+  let phone,amount,label,icon,detail;
+
+  if(service==='data'){
+    phone=document.getElementById('d-phone').value.trim();
+    const plan=document.getElementById('d-plan');
+    amount=parseInt(plan.value);
+    const network=document.getElementById('d-network').value.toUpperCase();
+    label=network+' '+plan.options[plan.selectedIndex].text.split('–')[0].trim()+' Data';
+    icon='📶'; detail=phone;
+    if(!phone){showToast('Enter a phone number','error');return}
+  } else if(service==='airtime'){
+    phone=document.getElementById('a-phone').value.trim();
+    amount=parseInt(document.getElementById('a-amount').value);
+    const network=document.getElementById('a-network').value;
+    label=network+' Airtime';
+    icon='📱'; detail=phone;
+    if(!phone||!amount){showToast('Fill in all fields','error');return}
+  } else if(service==='cable'){
+    const card=document.getElementById('c-card').value.trim();
+    const plan=document.getElementById('c-plan');
+    amount=parseInt(plan.value);
+    const provider=document.getElementById('c-provider').value;
+    label=provider+' Subscription';
+    icon='📺'; detail='Card: '+card;
+    if(!card){showToast('Enter SmartCard number','error');return}
+  } else if(service==='electricity'){
+    const meter=document.getElementById('e-meter').value.trim();
+    amount=parseInt(document.getElementById('e-amount').value);
+    const disco=document.getElementById('e-disco').value;
+    label=disco+' Electricity';
+    icon='⚡'; detail='Meter: '+meter;
+    if(!meter||!amount){showToast('Fill in all fields','error');return}
+  }
+
+  if(amount>state.walletBalance){
+    showToast('Insufficient wallet balance. Please fund your wallet.','error');
+    setTimeout(()=>openFundModal(),1500);
+    return;
+  }
+
+  // Show loading
+  const btn=event.target;
+  const orig=btn.innerHTML;
+  btn.disabled=true;
+  btn.innerHTML='<span class="loader"></span> Processing...';
+
+  // ── VTpass API call (sandbox) ──
+  // NOTE: In production you MUST proxy this through your backend
+  // Never expose API keys in frontend code for a real app
+  try {
+    // Simulate API call (replace with real VTpass call via your backend)
+    await new Promise(r=>setTimeout(r,2000)); // Simulated 2s delay
+
+    /* REAL VTPASS CALL — do this from your backend:
+    const res = await fetch(CONFIG.VTPASS_BASE_URL+'/pay', {
+      method:'POST',
+      headers:{'api-key':CONFIG.VTPASS_API_KEY,'secret-key':CONFIG.VTPASS_SECRET_KEY,'Content-Type':'application/json'},
+      body: JSON.stringify({ request_id:'SSM'+Date.now(), serviceID:'mtn-data', billersCode:phone, variation_code:'mtn-10mb-300', amount, phone })
+    });
+    const data = await res.json();
+    if(data.code !== '000') throw new Error(data.response_description); */
+
+    // Deduct from wallet & record transaction
+    state.walletBalance-=amount;
+    state.totalSpent+=amount;
+    addTransaction({icon,name:label,detail,amount:'-₦'+amount.toLocaleString(),type:'debit'});
+    updateWalletUI();
+    showToast(label+' successful! ✅','success');
+  } catch(err){
+    showToast('Transaction failed. Please try again.','error');
+  } finally {
+    btn.disabled=false; btn.innerHTML=orig;
+  }
+}
+
+// ══ TRANSACTIONS ══
+function addTransaction({icon,name,detail,amount,type}){
+  state.transactions.unshift({icon,name,detail,amount,type,time:new Date()});
+  renderTransactions();
+}
+function renderTransactions(){
+  const list=document.getElementById('txnList');
+  if(!state.transactions.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">No transactions yet.</div>';return}
+  list.innerHTML=state.transactions.slice(0,8).map(t=>`
+    <div class="txn-item">
+      <div class="txn-icon" style="background:rgba(26,107,255,.08);">${t.icon}</div>
+      <div class="txn-info"><div class="txn-name">${t.name}</div><div class="txn-time">${formatTime(t.time)} · ${t.detail}</div></div>
+      <div class="txn-amount ${t.type}">${t.amount}</div>
+    </div>`).join('');
+}
+function formatTime(d){
+  return d.toLocaleTimeString('en-NG',{hour:'2-digit',minute:'2-digit'})+' today';
+}
+
+// ══ TOAST ══
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+</script>
+</body>
+</html>
