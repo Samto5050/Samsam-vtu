@@ -243,4 +243,537 @@
   <div class="networks-strip">
     <span>Supported Networks</span>
     <div class="net-chip mtn"><div class="dot"></div> MTN</div>
-    <div class="net-chip airtel">
+    <div class="net-chip airtel"><div class="dot"></div> Airtel</div>
+    <div class="net-chip glo"><div class="dot"></div> Glo</div>
+    <div class="net-chip nmobile"><div class="dot"></div> 9mobile</div>
+  </div>
+
+  <section class="section" id="services">
+    <div class="section-header">
+      <div class="badge" style="margin-bottom:12px;">Our Services</div>
+      <h2>Everything You Need, One Platform</h2>
+      <p>Top up, pay bills, and stay connected — instantly.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card s-blue" onclick="openModal('register')"><div class="service-icon">📶</div><h3>Mobile Data</h3><p>MTN, Airtel, Glo & 9mobile data bundles at best prices</p></div>
+      <div class="service-card s-orange" onclick="openModal('register')"><div class="service-icon">📱</div><h3>Airtime Top-Up</h3><p>All networks, instant delivery, any amount from ₦50</p></div>
+      <div class="service-card s-green" onclick="openModal('register')"><div class="service-icon">📺</div><h3>Cable TV</h3><p>DSTV, GOtv & Startimes subscription renewals</p></div>
+      <div class="service-card s-purple" onclick="openModal('register')"><div class="service-icon">⚡</div><h3>Electricity Bills</h3><p>Buy prepaid & postpaid electricity units easily</p></div>
+      <div class="service-card s-teal" onclick="openModal('register')"><div class="service-icon">📋</div><h3>Exam Pins & More</h3><p>WAEC, NECO, JAMB result pins at your fingertips</p></div>
+    </div>
+  </section>
+
+  <section class="section how-bg" id="how">
+    <div class="section-header">
+      <div class="badge" style="background:rgba(255,107,26,.15);color:var(--orange);margin-bottom:12px;">Simple Process</div>
+      <h2>How It Works</h2><p>Get started in under 2 minutes.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-num">1</div><h3>Create Account</h3><p>Sign up free with your email and phone number.</p></div>
+      <div class="step-card"><div class="step-num">2</div><h3>Fund Wallet</h3><p>Add funds via bank transfer or card — secured by Paystack.</p></div>
+      <div class="step-card"><div class="step-num">3</div><h3>Choose Service</h3><p>Pick data, airtime, cable, electricity or exam pins.</p></div>
+      <div class="step-card"><div class="step-num">4</div><h3>Done! ⚡</h3><p>Instant delivery. Receipt goes straight to your email.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="plans">
+    <div class="section-header">
+      <div class="badge" style="margin-bottom:12px;">Data Plans</div>
+      <h2>Affordable Data Bundles</h2><p>SME data at prices that make sense. No hidden charges.</p>
+    </div>
+    <div class="plans-tabs">
+      <div class="plan-tab active" onclick="switchNetwork(this,'mtn')">MTN</div>
+      <div class="plan-tab" onclick="switchNetwork(this,'airtel')">Airtel</div>
+      <div class="plan-tab" onclick="switchNetwork(this,'glo')">Glo</div>
+      <div class="plan-tab" onclick="switchNetwork(this,'9mobile')">9mobile</div>
+    </div>
+    <div class="plans-grid" id="plansGrid"></div>
+  </section>
+
+  <section class="section" style="background:#fff;">
+    <div class="section-header"><div class="badge" style="margin-bottom:12px;">Testimonials</div><h2>Loved by Nigerians 🇳🇬</h2></div>
+    <div class="testi-grid">
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"SamSam is unreal! I bought 10GB for my MTN line and it delivered in literally 5 seconds. Will never use another platform again."</p><div class="testi-author"><div class="testi-avatar" style="background:var(--blue);">TJ</div><div><div class="testi-name">Taiwo Johnson</div><div class="testi-loc">Lagos, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"I sell data as a business and SamSam's prices are the best I've seen anywhere. My profits doubled after switching."</p><div class="testi-author"><div class="testi-avatar" style="background:var(--orange);">FA</div><div><div class="testi-name">Fatima Aliyu</div><div class="testi-loc">Abuja, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Paid my DSTV and electricity bill on the same day without leaving my house. Clean, fast, and easy!"</p><div class="testi-author"><div class="testi-avatar" style="background:var(--green);">CU</div><div><div class="testi-name">Chidi Uche</div><div class="testi-loc">Port Harcourt, Nigeria</div></div></div></div>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <h2>Ready to Get Started?</h2>
+    <p>Join 120,000+ Nigerians who trust SamSam for all their top-up needs.</p>
+    <button class="btn btn-orange" onclick="openModal('register')">🚀 Create Free Account — It's Fast</button>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo" style="color:#fff;">Sam<span>Sam</span></div>
+        <p>Nigeria's most reliable VTU platform. Fast, affordable, and always available.</p>
+      </div>
+      <div class="footer-col"><h4>Services</h4><a>Mobile Data</a><a>Airtime</a><a>Cable TV</a><a>Electricity</a><a>Exam Pins</a></div>
+      <div class="footer-col"><h4>Company</h4><a>About Us</a><a>Blog</a><a>Careers</a><a>Contact</a></div>
+      <div class="footer-col"><h4>Support</h4><a>FAQs</a><a>Help Center</a><a>Privacy Policy</a><a>Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 SamSam. All rights reserved.</span><span>Secured by Paystack 🔒</span></div>
+  </footer>
+</div>
+
+<!-- DASHBOARD PAGE -->
+<div id="page-dashboard" class="page">
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">Sam<span>Sam</span></div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-item active" onclick="switchDashTab(this)"><span class="icon">🏠</span> Dashboard</div>
+        <div class="sidebar-section">Services</div>
+        <div class="sidebar-item" onclick="switchDashTab(this);switchServiceTab(null,'data')"><span class="icon">📶</span> Buy Data</div>
+        <div class="sidebar-item" onclick="switchDashTab(this);switchServiceTab(null,'airtime')"><span class="icon">📱</span> Airtime</div>
+        <div class="sidebar-item" onclick="switchDashTab(this);switchServiceTab(null,'cable')"><span class="icon">📺</span> Cable TV</div>
+        <div class="sidebar-item" onclick="switchDashTab(this);switchServiceTab(null,'elect')"><span class="icon">⚡</span> Electricity</div>
+        <div class="sidebar-section">Account</div>
+        <div class="sidebar-item" onclick="switchDashTab(this);openFundModal()"><span class="icon">💰</span> Fund Wallet</div>
+        <div class="sidebar-item" onclick="switchDashTab(this)"><span class="icon">📜</span> History</div>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="sidebarAvatar">SS</div>
+          <div><div class="sidebar-username" id="sidebarName">Loading...</div><div class="sidebar-role">Standard User</div></div>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;margin-top:14px;padding:10px;font-size:13px;" onclick="logout()">Logout</button>
+      </div>
+    </aside>
+
+    <main class="dash-main">
+      <div class="dash-header">
+        <div>
+          <h2 id="dashGreeting">Welcome 👋</h2>
+          <p style="color:var(--muted);font-size:13px;margin-top:4px;">Here's your account overview.</p>
+        </div>
+        <div class="dash-header-right">
+          <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+          <button class="btn btn-primary" style="padding:10px 20px;font-size:13px;" onclick="openFundModal()">+ Fund Wallet</button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card accent-blue"><div class="stat-label">Wallet Balance</div><div class="stat-val" id="walletBalStat">₦0.00</div><div class="stat-change">Available to spend</div></div>
+        <div class="stat-card"><div class="stat-label">Total Spent</div><div class="stat-val" id="totalSpentStat">₦0</div><div class="stat-change" style="color:var(--orange);">All time</div></div>
+        <div class="stat-card"><div class="stat-label">Transactions</div><div class="stat-val" id="txnCountStat">0</div><div class="stat-change">All time</div></div>
+        <div class="stat-card"><div class="stat-label">Referral Bonus</div><div class="stat-val">₦0</div><div class="stat-change" style="color:var(--green);">Invite friends</div></div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-panel">
+          <div class="panel-header"><h3>Recent Transactions</h3></div>
+          <div class="txn-list" id="txnList">
+            <div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">No transactions yet.<br>Fund your wallet and make your first purchase!</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="wallet-card">
+            <div class="wallet-label">Wallet Balance</div>
+            <div class="wallet-bal" id="walletBalCard">₦0.00</div>
+            <div class="wallet-actions">
+              <button class="w-btn" onclick="openFundModal()">+ Fund</button>
+              <button class="w-btn">↗ Transfer</button>
+            </div>
+          </div>
+          <div class="dash-panel">
+            <h3 style="margin-bottom:16px;font-size:15px;font-weight:700;">Quick Purchase</h3>
+            <div class="service-tabs">
+              <div class="s-tab active" onclick="switchServiceTab(this,'data')">Data</div>
+              <div class="s-tab" onclick="switchServiceTab(this,'airtime')">Airtime</div>
+              <div class="s-tab" onclick="switchServiceTab(this,'cable')">Cable</div>
+              <div class="s-tab" onclick="switchServiceTab(this,'elect')">Electricity</div>
+            </div>
+
+            <div class="quick-form active" id="qf-data">
+              <div class="form-group"><label>Network</label><select id="d-network"><option value="mtn">MTN</option><option value="airtel">Airtel</option><option value="glo">Glo</option><option value="9mobile">9mobile</option></select></div>
+              <div class="form-group"><label>Phone Number</label><input type="tel" id="d-phone" placeholder="0801 234 5678"/></div>
+              <div class="form-group"><label>Data Plan</label>
+                <select id="d-plan">
+                  <option value="300|mtn-1gb">1GB – 30 Days – ₦300</option>
+                  <option value="550|mtn-2gb">2GB – 30 Days – ₦550</option>
+                  <option value="1500|mtn-5gb">5GB – 30 Days – ₦1,500</option>
+                  <option value="2800|mtn-10gb">10GB – 30 Days – ₦2,800</option>
+                  <option value="5000|mtn-20gb">20GB – 30 Days – ₦5,000</option>
+                </select></div>
+              <button class="proceed-btn" onclick="processBuy('data')">Buy Data ⚡</button>
+            </div>
+
+            <div class="quick-form" id="qf-airtime">
+              <div class="form-group"><label>Network</label><select id="a-network"><option value="mtn">MTN</option><option value="airtel">Airtel</option><option value="glo">Glo</option><option value="9mobile">9mobile</option></select></div>
+              <div class="form-group"><label>Phone Number</label><input type="tel" id="a-phone" placeholder="0801 234 5678"/></div>
+              <div class="form-group"><label>Amount (₦)</label><input type="number" id="a-amount" placeholder="e.g. 500" min="50"/></div>
+              <button class="proceed-btn" onclick="processBuy('airtime')">Buy Airtime ⚡</button>
+            </div>
+
+            <div class="quick-form" id="qf-cable">
+              <div class="form-group"><label>Provider</label><select id="c-provider"><option>DSTV</option><option>GOtv</option><option>Startimes</option></select></div>
+              <div class="form-group"><label>SmartCard / IUC Number</label><input type="text" id="c-card" placeholder="1234567890"/></div>
+              <div class="form-group"><label>Package</label><select id="c-plan"><option value="9000|dstv-compact">DSTV Compact – ₦9,000</option><option value="5000|dstv-access">DSTV Access – ₦5,000</option><option value="4150|gotv-jolli">GOtv Jolli – ₦4,150</option><option value="2950|gotv-jinja">GOtv Jinja – ₦2,950</option><option value="1900|startimes-nova">Startimes Nova – ₦1,900</option></select></div>
+              <button class="proceed-btn" onclick="processBuy('cable')">Pay Subscription ⚡</button>
+            </div>
+
+            <div class="quick-form" id="qf-elect">
+              <div class="form-group"><label>Disco</label><select id="e-disco"><option value="ekedc">EKEDC (Eko)</option><option value="ikedc">IKEDC (Ikeja)</option><option value="aedc">AEDC (Abuja)</option><option value="phed">PHED (Port Harcourt)</option><option value="eedc">EEDC (Enugu)</option></select></div>
+              <div class="form-group"><label>Meter Number</label><input type="text" id="e-meter" placeholder="12345678901"/></div>
+              <div class="form-group"><label>Phone Number</label><input type="tel" id="e-phone" placeholder="0801 234 5678"/></div>
+              <div class="form-group"><label>Amount (₦)</label><input type="number" id="e-amount" placeholder="e.g. 5000" min="500"/></div>
+              <button class="proceed-btn" onclick="processBuy('electricity')">Buy Units ⚡</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+    <div id="loginForm">
+      <h2>Welcome back 👋</h2><p class="subtitle">Log in to your SamSam account</p>
+      <div class="form-error" id="loginError"></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"/></div>
+      <button class="form-submit" id="loginBtn" onclick="handleLogin()">Log In</button>
+      <div class="auth-switch">Don't have an account? <a onclick="openModal('register')">Sign up free</a></div>
+    </div>
+    <div id="registerForm" style="display:none;">
+      <h2>Create Account 🚀</h2><p class="subtitle">Join 120,000+ users on SamSam</p>
+      <div class="form-error" id="registerError"></div>
+      <div class="form-group"><label>Full Name</label><input type="text" id="regName" placeholder="John Doe"/></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="regEmail" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>Phone Number</label><input type="tel" id="regPhone" placeholder="0801 234 5678"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="regPass" placeholder="Min. 8 characters"/></div>
+      <button class="form-submit" id="registerBtn" onclick="handleRegister()">Create Account — Free</button>
+      <div class="auth-switch">Already have an account? <a onclick="openModal('login')">Log in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- FUND MODAL -->
+<div class="modal-overlay" id="fundModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('fundModal')">✕</button>
+    <h2>Fund Wallet 💰</h2><p class="subtitle">Add money securely via Paystack</p>
+    <div class="fund-amounts">
+      <div class="fund-chip" onclick="selectFundAmount(this,500)">₦500</div>
+      <div class="fund-chip" onclick="selectFundAmount(this,1000)">₦1,000</div>
+      <div class="fund-chip" onclick="selectFundAmount(this,2000)">₦2,000</div>
+      <div class="fund-chip" onclick="selectFundAmount(this,5000)">₦5,000</div>
+      <div class="fund-chip" onclick="selectFundAmount(this,10000)">₦10,000</div>
+    </div>
+    <div class="form-group"><label>Or enter custom amount (₦)</label><input type="number" id="fundAmount" placeholder="e.g. 3000" min="100"/></div>
+    <button class="form-submit" onclick="initPaystack()">Pay with Paystack 🔒</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script>
+// ══ CONFIG ══
+const API = '/api';
+const PAYSTACK_KEY = 'pk_test_5722e3ed7d7381213f633c6fba24b484ff7df6d0';
+
+// ══ STATE ══
+let state = { token: localStorage.getItem('samsam_token'), user: null };
+
+// ══ DATA PLANS ══
+const plans = {
+  mtn:[{size:'500MB',validity:'30 Days',price:'₦150',amount:150,code:'mtn-500mb'},{size:'1GB',validity:'30 Days',price:'₦300',amount:300,code:'mtn-1gb'},{size:'2GB',validity:'30 Days',price:'₦550',amount:550,code:'mtn-2gb'},{size:'5GB',validity:'30 Days',price:'₦1,500',amount:1500,code:'mtn-5gb'},{size:'10GB',validity:'30 Days',price:'₦2,800',amount:2800,code:'mtn-10gb'},{size:'20GB',validity:'30 Days',price:'₦5,000',amount:5000,code:'mtn-20gb'}],
+  airtel:[{size:'500MB',validity:'30 Days',price:'₦200',amount:200,code:'airtel-500mb'},{size:'1.5GB',validity:'30 Days',price:'₦400',amount:400,code:'airtel-1gb'},{size:'3GB',validity:'30 Days',price:'₦700',amount:700,code:'airtel-3gb'},{size:'6GB',validity:'30 Days',price:'₦1,500',amount:1500,code:'airtel-6gb'},{size:'12GB',validity:'30 Days',price:'₦2,900',amount:2900,code:'airtel-12gb'},{size:'25GB',validity:'30 Days',price:'₦5,500',amount:5500,code:'airtel-25gb'}],
+  glo:[{size:'1GB',validity:'30 Days',price:'₦250',amount:250,code:'glo-1gb'},{size:'2.5GB',validity:'30 Days',price:'₦500',amount:500,code:'glo-2gb'},{size:'5GB',validity:'30 Days',price:'₦1,000',amount:1000,code:'glo-5gb'},{size:'10GB',validity:'30 Days',price:'₦2,000',amount:2000,code:'glo-10gb'},{size:'18GB',validity:'30 Days',price:'₦3,500',amount:3500,code:'glo-18gb'},{size:'30GB',validity:'30 Days',price:'₦5,500',amount:5500,code:'glo-30gb'}],
+  '9mobile':[{size:'500MB',validity:'30 Days',price:'₦200',amount:200,code:'9mobile-500mb'},{size:'1GB',validity:'30 Days',price:'₦350',amount:350,code:'9mobile-1gb'},{size:'2GB',validity:'30 Days',price:'₦700',amount:700,code:'9mobile-2gb'},{size:'5GB',validity:'30 Days',price:'₦1,600',amount:1600,code:'9mobile-5gb'},{size:'10GB',validity:'30 Days',price:'₦3,000',amount:3000,code:'9mobile-10gb'},{size:'15GB',validity:'30 Days',price:'₦4,500',amount:4500,code:'9mobile-15gb'}]
+};
+
+function renderPlans(network){
+  document.getElementById('plansGrid').innerHTML = plans[network].map(p=>`
+    <div class="plan-card">
+      <div class="plan-size">${p.size}</div>
+      <div class="plan-validity">${p.validity}</div>
+      <div class="plan-price">${p.price}</div>
+      <button class="plan-buy" onclick="openModal('register')">Buy Now</button>
+    </div>`).join('');
+}
+renderPlans('mtn');
+
+function switchNetwork(el,network){
+  document.querySelectorAll('.plan-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); renderPlans(network);
+}
+
+// ══ PAGES ══
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('mainNav').style.display = name==='home'?'flex':'none';
+  window.scrollTo(0,0);
+}
+function scrollToSection(id){
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ══ MODALS ══
+function openModal(type){
+  document.getElementById('authModal').classList.add('open');
+  document.getElementById('loginForm').style.display = type==='login'?'block':'none';
+  document.getElementById('registerForm').style.display = type==='register'?'block':'none';
+}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')});
+});
+
+// ══ API CALLS ══
+async function apiCall(endpoint, body, token=null){
+  const headers = {'Content-Type':'application/json'};
+  if(token) headers['Authorization'] = 'Bearer '+token;
+  const res = await fetch(API+'/'+endpoint, {method:'POST', headers, body:JSON.stringify(body)});
+  return res.json();
+}
+
+// ══ AUTH ══
+async function handleRegister(){
+  const btn = document.getElementById('registerBtn');
+  const errEl = document.getElementById('registerError');
+  errEl.classList.remove('show');
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const phone=document.getElementById('regPhone').value.trim();
+  const password=document.getElementById('regPass').value;
+  if(!name||!email||!phone||!password){showFormError(errEl,'Please fill in all fields');return}
+  btn.disabled=true; btn.innerHTML='<span class="loader"></span> Creating account...';
+  try {
+    const data = await apiCall('register',{name,email,phone,password});
+    if(!data.success){showFormError(errEl,data.message);return}
+    state.token = data.token;
+    state.user = data.user;
+    localStorage.setItem('samsam_token', data.token);
+    closeModal('authModal');
+    loadDashboard(data.user);
+    showToast('Welcome to SamSam! 🎉','success');
+  } catch(e){
+    showFormError(errEl,'Registration failed. Please try again.');
+  } finally {
+    btn.disabled=false; btn.innerHTML='Create Account — Free';
+  }
+}
+
+async function handleLogin(){
+  const btn = document.getElementById('loginBtn');
+  const errEl = document.getElementById('loginError');
+  errEl.classList.remove('show');
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPass').value;
+  if(!email||!password){showFormError(errEl,'Please fill in all fields');return}
+  btn.disabled=true; btn.innerHTML='<span class="loader"></span> Logging in...';
+  try {
+    const data = await apiCall('login',{email,password});
+    if(!data.success){showFormError(errEl,data.message);return}
+    state.token = data.token;
+    state.user = data.user;
+    localStorage.setItem('samsam_token', data.token);
+    closeModal('authModal');
+    loadDashboard(data.user);
+    showToast('Welcome back! 👋','success');
+  } catch(e){
+    showFormError(errEl,'Login failed. Please try again.');
+  } finally {
+    btn.disabled=false; btn.innerHTML='Log In';
+  }
+}
+
+function showFormError(el, msg){el.textContent=msg; el.classList.add('show')}
+
+function loadDashboard(user){
+  const initials = user.name.slice(0,2).toUpperCase();
+  const displayName = user.name.charAt(0).toUpperCase()+user.name.slice(1);
+  document.getElementById('sidebarAvatar').textContent = initials;
+  document.getElementById('sidebarName').textContent = displayName;
+  const hour = new Date().getHours();
+  const greeting = hour<12?'Good morning':hour<17?'Good afternoon':'Good evening';
+  document.getElementById('dashGreeting').textContent = greeting+', '+displayName+' 👋';
+  updateWalletUI(user.wallet_balance, user.total_spent);
+  fetchTransactions();
+  showPage('dashboard');
+}
+
+async function fetchTransactions(){
+  try {
+    const res = await fetch(API+'/profile', {headers:{'Authorization':'Bearer '+state.token}});
+    const data = await res.json();
+    if(data.success){
+      state.user = data.user;
+      updateWalletUI(data.user.wallet_balance, data.user.total_spent);
+      renderTransactions(data.transactions);
+    }
+  } catch(e){ console.error('Profile fetch error:', e); }
+}
+
+function logout(){
+  localStorage.removeItem('samsam_token');
+  state = {token:null, user:null};
+  showPage('home');
+  showToast('You have been logged out.','success');
+}
+
+// ══ WALLET ══
+function updateWalletUI(balance, spent){
+  const fmt = '₦'+parseFloat(balance||0).toLocaleString('en-NG',{minimumFractionDigits:2});
+  document.getElementById('walletBalStat').textContent = fmt;
+  document.getElementById('walletBalCard').textContent = fmt;
+  document.getElementById('totalSpentStat').textContent = '₦'+parseFloat(spent||0).toLocaleString();
+}
+
+let selectedFundAmount = 0;
+function openFundModal(){document.getElementById('fundModal').classList.add('open')}
+function selectFundAmount(el,amt){
+  document.querySelectorAll('.fund-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedFundAmount = amt;
+  document.getElementById('fundAmount').value = amt;
+}
+
+function initPaystack(){
+  if(!state.user){showToast('Please log in first','error');return}
+  const input = document.getElementById('fundAmount').value;
+  const amount = parseInt(input)||selectedFundAmount;
+  if(!amount||amount<100){showToast('Minimum funding is ₦100','error');return}
+  const handler = PaystackPop.setup({
+    key: PAYSTACK_KEY,
+    email: state.user.email,
+    amount: amount*100,
+    currency:'NGN',
+    ref:'SSM-'+Date.now(),
+    metadata:{ user_id: state.user.id },
+    callback:function(response){
+      closeModal('fundModal');
+      // Update balance optimistically — webhook will confirm on backend
+      const newBal = parseFloat(state.user.wallet_balance||0) + amount;
+      state.user.wallet_balance = newBal;
+      updateWalletUI(newBal, state.user.total_spent);
+      // Record in transactions list
+      renderTransactions([{
+        type:'credit', service:'Wallet Funding',
+        detail:'Via Paystack · Ref: '+response.reference,
+        amount, created_at: new Date().toISOString()
+      }, ...(state._txns||[])]);
+      showToast('₦'+amount.toLocaleString()+' added to wallet! 🎉','success');
+      // Refresh from server after 3s to confirm
+      setTimeout(fetchTransactions, 3000);
+    },
+    onClose:function(){showToast('Payment cancelled','error')}
+  });
+  handler.openIframe();
+}
+
+// ══ BUY SERVICE ══
+async function processBuy(service){
+  if(!state.token){showToast('Please log in first','error');return}
+  const btn = event.target;
+  const orig = btn.innerHTML;
+  let body = {service};
+
+  if(service==='data'){
+    const phone = document.getElementById('d-phone').value.trim();
+    const planEl = document.getElementById('d-plan');
+    const [amount, code] = planEl.value.split('|');
+    const network = document.getElementById('d-network').value;
+    if(!phone){showToast('Enter a phone number','error');return}
+    Object.assign(body,{network,phone,plan_code:code,amount:parseInt(amount)});
+  } else if(service==='airtime'){
+    const phone = document.getElementById('a-phone').value.trim();
+    const amount = parseInt(document.getElementById('a-amount').value);
+    const network = document.getElementById('a-network').value;
+    if(!phone||!amount){showToast('Fill in all fields','error');return}
+    Object.assign(body,{network,phone,amount});
+  } else if(service==='cable'){
+    const smartcard = document.getElementById('c-card').value.trim();
+    const planEl = document.getElementById('c-plan');
+    const [amount, cable_plan] = planEl.value.split('|');
+    const provider = document.getElementById('c-provider').value;
+    if(!smartcard){showToast('Enter SmartCard number','error');return}
+    Object.assign(body,{provider,smartcard,cable_plan,amount:parseInt(amount)});
+  } else if(service==='electricity'){
+    const meter = document.getElementById('e-meter').value.trim();
+    const amount = parseInt(document.getElementById('e-amount').value);
+    const disco = document.getElementById('e-disco').value;
+    const phone = document.getElementById('e-phone').value.trim();
+    if(!meter||!amount||!phone){showToast('Fill in all fields','error');return}
+    Object.assign(body,{disco,meter,phone,amount});
+  }
+
+  btn.disabled=true; btn.innerHTML='<span class="loader"></span> Processing...';
+
+  try {
+    const data = await apiCall('buy', body, state.token);
+    if(!data.success){showToast(data.message,'error');return}
+    // Update wallet balance from server response
+    state.user.wallet_balance = data.new_balance;
+    updateWalletUI(data.new_balance, state.user.total_spent);
+    showToast(data.message,'success');
+    setTimeout(fetchTransactions, 1000);
+  } catch(e){
+    showToast('Transaction failed. Please try again.','error');
+  } finally {
+    btn.disabled=false; btn.innerHTML=orig;
+  }
+}
+
+// ══ TRANSACTIONS ══
+function renderTransactions(txns){
+  state._txns = txns;
+  const list = document.getElementById('txnList');
+  document.getElementById('txnCountStat').textContent = txns.length;
+  if(!txns.length){
+    list.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">No transactions yet.<br>Fund your wallet and make your first purchase!</div>';
+    return;
+  }
+  const icons = {'Wallet Funding':'💰','Data':'📶','Airtime':'📱','Cable':'📺','Electricity':'⚡','Exam':'📋'};
+  list.innerHTML = txns.slice(0,10).map(t=>{
+    const icon = Object.entries(icons).find(([k])=>t.service.includes(k))?.[1]||'💳';
+    const time = new Date(t.created_at).toLocaleString('en-NG',{hour:'2-digit',minute:'2-digit',month:'short',day:'numeric'});
+    const amt = t.type==='credit'?'+₦'+parseFloat(t.amount).toLocaleString():'-₦'+parseFloat(t.amount).toLocaleString();
+    return `<div class="txn-item">
+      <div class="txn-icon">${icon}</div>
+      <div class="txn-info"><div class="txn-name">${t.service}</div><div class="txn-time">${time} · ${t.detail||''}</div></div>
+      <div class="txn-amount ${t.type}">${amt}</div>
+    </div>`;
+  }).join('');
+}
+
+// ══ TABS ══
+function switchDashTab(el){
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
+function switchServiceTab(el,tab){
+  if(el){document.querySelectorAll('.s-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
+  document.querySelectorAll('.quick-form').forEach(f=>f.classList.remove('active'));
+  document.getElementById('qf-'+tab).classList.add('active');
+}
+
+// ══ TOAST ══
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),4000);
+}
+
+// ══ AUTO LOGIN on page load ══
+if(state.token){
+  fetch(API+'/profile',{headers:{'Authorization':'Bearer '+state.token}})
+    .then(r=>r.json()).then(data=>{
+      if(data.success){ state.user=data.user; loadDashboard(data.user); renderTransactions(data.transactions||[]); }
+      else { localStorage.removeItem('samsam_token'); }
+    }).catch(()=>{});
+}
+</script>
+</body>
+</html>
