@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+bcrypt bcryptt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { supabase, ok, err, preflight } = require('./_db');
 
